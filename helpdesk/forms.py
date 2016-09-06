@@ -7,8 +7,6 @@ forms.py - Definitions of newforms-based forms for creating and maintaining
            tickets.
 """
 
-from StringIO import StringIO
-
 from django import forms
 from django.forms import extras
 from django.conf import settings
@@ -24,11 +22,12 @@ from helpdesk.models import Ticket, Queue, FollowUp, Attachment, IgnoreEmail, Ti
 from helpdesk.settings import HAS_TAG_SUPPORT
 from helpdesk import settings as helpdesk_settings
 
+
 class EditTicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
         exclude = ('created', 'modified', 'status', 'on_hold', 'resolution', 'last_escalation', 'assigned_to')
-    
+
     def __init__(self, *args, **kwargs):
         """
         Add any custom fields that are defined to the form
@@ -107,9 +106,11 @@ class EditFollowUpForm(forms.ModelForm):
         "Filter not openned tickets here."
         super(EditFollowUpForm, self).__init__(*args, **kwargs)
         self.fields["ticket"].queryset = Ticket.objects.filter(status__in=(Ticket.OPEN_STATUS, Ticket.REOPENED_STATUS))
+
     class Meta:
         model = FollowUp
         exclude = ('date', 'user',)
+
 
 class TicketForm(forms.Form):
     queue = forms.ChoiceField(
@@ -590,9 +591,12 @@ class UserSettingsForm(forms.Form):
         required=False,
         )
 
+
 class EmailIgnoreForm(forms.ModelForm):
     class Meta:
         model = IgnoreEmail
+        fields = '__all__'
+
 
 class TicketCCForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -601,7 +605,8 @@ class TicketCCForm(forms.ModelForm):
             users = User.objects.filter(is_active=True, is_staff=True).order_by('username')
         else:
             users = User.objects.filter(is_active=True).order_by('username')
-        self.fields['user'].queryset = users 
+        self.fields['user'].queryset = users
+
     class Meta:
         model = TicketCC
         exclude = ('ticket',)
