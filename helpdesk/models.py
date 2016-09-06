@@ -669,7 +669,6 @@ class PreSetReply(models.Model):
     queues = models.ManyToManyField(
         Queue,
         blank=True,
-        null=True,
         help_text=_('Leave blank to allow this reply to be used for all '
             'queues, or select those queues you wish to limit this reply to.'),
         )
@@ -709,7 +708,6 @@ class EscalationExclusion(models.Model):
     queues = models.ManyToManyField(
         Queue,
         blank=True,
-        null=True,
         help_text=_('Leave blank for this exclusion to be applied to all '
             'queues, or select those queues you wish to exclude with this '
             'entry.'),
@@ -1003,7 +1001,6 @@ class IgnoreEmail(models.Model):
     queues = models.ManyToManyField(
         Queue,
         blank=True,
-        null=True,
         help_text=_('Leave blank for this e-mail to be ignored on all '
             'queues, or select those queues you wish to ignore this e-mail '
             'for.'),
