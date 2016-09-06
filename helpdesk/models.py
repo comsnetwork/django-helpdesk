@@ -493,7 +493,7 @@ class FollowUp(models.Model):
 
     date = models.DateTimeField(
         _('Date'), 
-        default = timezone.now()
+        default = timezone.now
         )
 
     title = models.CharField(
