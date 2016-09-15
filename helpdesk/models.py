@@ -1125,8 +1125,8 @@ class TicketCC(models.Model):
         return u'%s for %s' % (self.display, self.ticket.title)
 
 class CustomFieldManager(models.Manager):
-    def get_query_set(self):
-        return super(CustomFieldManager, self).get_query_set().order_by('ordering')
+    def get_queryset(self):
+        return super(CustomFieldManager, self).get_queryset().order_by('ordering')
 
 
 class CustomField(models.Model):

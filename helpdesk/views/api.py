@@ -10,14 +10,11 @@ The API documentation can be accessed by visiting http://helpdesk/api/help/
 (obviously, substitute helpdesk for your django-helpdesk URI), or by reading
 through templates/helpdesk/help_api.html.
 """
-
-from django import forms
+import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.template import loader, Context
-from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
 
 try:
@@ -98,10 +95,9 @@ def api_return(status, text='', json=False):
     return r
 
 
-class API:
+class API(object):
     def __init__(self, request):
         self.request = request
-
 
     def api_public_create_ticket(self):
         form = TicketForm(self.request.POST)
@@ -114,10 +110,8 @@ class API:
         else:
             return api_return(STATUS_ERROR, text=form.errors.as_text())
 
-
     def api_public_list_queues(self):
-        return api_return(STATUS_OK, simplejson.dumps([{"id": "%s" % q.id, "title": "%s" % q.title} for q in Queue.objects.all()]), json=True)
-
+        return api_return(STATUS_OK, json.dumps([{"id": "%s" % q.id, "title": "%s" % q.title} for q in Queue.objects.all()]), json=True)
 
     def api_public_find_user(self):
         username = self.request.POST.get('username', False)
@@ -128,7 +122,6 @@ class API:
 
         except User.DoesNotExist:
             return api_return(STATUS_ERROR, "Invalid username provided")
-
 
     def api_public_delete_ticket(self):
         if not self.request.POST.get('confirm', False):
@@ -321,4 +314,3 @@ class API:
         ticket.save()
 
         return api_return(STATUS_OK)
-
