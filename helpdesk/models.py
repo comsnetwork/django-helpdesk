@@ -967,7 +967,7 @@ def create_usersettings(sender, created_models=[], instance=None, created=False,
     """
     Helper function to create UserSettings instances as 
     required, eg when we first create the UserSettings database
-    table via 'syncdb' or when we save a new user.
+    table via 'migrate' or when we save a new user.
 
     If we end up with users with no UserSettings, then we get horrible
     'DoesNotExist: UserSettings matching query does not exist.' errors.
@@ -989,7 +989,7 @@ def create_usersettings(sender, created_models=[], instance=None, created=False,
                 s = UserSettings(user=u, settings=DEFAULT_USER_SETTINGS)
                 s.save()
 
-models.signals.post_syncdb.connect(create_usersettings)
+models.signals.post_migrate.connect(create_usersettings)
 models.signals.post_save.connect(create_usersettings, sender=User)
 
 class IgnoreEmail(models.Model):
