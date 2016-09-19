@@ -1142,7 +1142,7 @@ class CustomField(models.Model):
 
     label = models.CharField(
         _('Label'),
-        max_length='30',
+        max_length=30,
         help_text=_('The display label for this field'),
         )
 
