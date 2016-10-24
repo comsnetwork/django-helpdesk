@@ -79,7 +79,7 @@ def send_templated_mail(template_name, email_context, recipients, sender=None, b
 
     footer_file = os.path.join('helpdesk', locale, 'email_text_footer.txt')
 
-    text_part = context.template.engine.from_string(
+    text_part = Context(context).template.engine.from_string(
         "%s{%% include '%s' %%}" % (t.plain_text, footer_file)
         ).render(context)
 
