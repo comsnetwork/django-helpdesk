@@ -79,9 +79,8 @@ def send_templated_mail(template_name, email_context, recipients, sender=None, b
 
     footer_file = os.path.join('helpdesk', locale, 'email_text_footer.txt')
 
-    text_part = Context(context).template.engine.from_string(
-        "%s{%% include '%s' %%}" % (t.plain_text, footer_file)
-        ).render(context)
+    from django.template import engines
+    text_part = engines['django'].from_string("%s{%% include '%s' %%}" % (t.plain_text, footer_file)).render(context)
 
     email_html_base_file = os.path.join('helpdesk', locale, 'email_html_base.html')
 
