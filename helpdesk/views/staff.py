@@ -368,7 +368,10 @@ def update_ticket(request, ticket_id, public=False):
     # if comment contains some django code, like "why does {% if bla %} crash",
     # then the following line will give us a crash, since django expects {% if %}
     # to be closed with an {% endif %} tag.
-    comment = context.template.engine.from_string(comment).render(context)
+    from django.template import engines
+    template = engines['django'].from_string(comment)
+
+    comment = template.engine.from_string(comment).render(context)
 
     if owner is -1 and ticket.assigned_to:
         owner = ticket.assigned_to.id
